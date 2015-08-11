@@ -41,5 +41,5 @@ module.exports = (userModel, trModel, jwtHelper, protoBufHelper) ->
 				trModel.fetchTransactions serverTimestamp, done
 		], (err, data) ->
 			return next err if err
-			res.set('Content-Type', 'application/x-protobuf');
+			res.set('Content-Type', 'application/octet-stream');
 			res.send protoBufHelper.encode(createDeltaAccount data[1])

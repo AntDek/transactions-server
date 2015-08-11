@@ -39,6 +39,7 @@ app.use passport.initialize()
 app.use bodyParser.raw({type: "application/x-protobuf"})
 app.use bodyParser.urlencoded({ extended: true })
 
+
 ###
 	Endpoint logins user by userName and password.
 	New token will return if user is successfully authenticated
@@ -59,5 +60,5 @@ app.post '/sync', \
 # user custom error handler
 app.use errorHandler
 
-app.listen 3001, ->
-	console.log "listening at 3001"
+app.listen process.env.PORT, ->
+	console.log "listening at #{process.env.PORT}"

@@ -1,5 +1,5 @@
 # require dependencies to run application
-easypg = require 'easypg'
+easypg = require 'easy-pg'
 userModelFn = require './models/user'
 transactionModelFn = require './models/transaction'
 jwtHelperFn = require './util/jwtHelper'
@@ -20,18 +20,24 @@ transactionModel = transactionModelFn pgClient
 jwtHelper = jwtHelperFn config.jwt
 
 # configurate app
-app = require 'express'
+express = require 'express'
+bodyParser = require 'body-parser'
 passport = require 'passport'
 BearerStrategy = require('passport-http-bearer').Strategy
 
 protoBufHelper = protoBufHelperFn 'AccountDelta', __dirname + "/accountDelta.proto"
 protoBuffers = protoBuffersFn protoBufHelper
 
-appController = appControllerFn userModel, transactionModel, jwtHelper
+appController = appControllerFn userModel, transactionModel, jwtHelper, protoBufHelper
 authentication = authenticationFn jwtHelper
 
 passport.use new BearerStrategy {}, authentication.isUserAuthenticated
 
+app = express()
+
+app.use passport.initialize()
+app.use bodyParser.raw({type: "application/x-protobuf"})
+app.use bodyParser.urlencoded({ extended: true })
 
 ###
 	Endpoint logins user by userName and password.

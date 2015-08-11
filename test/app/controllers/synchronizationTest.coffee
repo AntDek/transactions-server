@@ -10,20 +10,12 @@ protoBufHelper = require('../../../app/util/protoBufHelper') 'AccountDelta', __d
 
 mockTransaction = {guid: "giud"}
 emptyRequest = {
-	user: ui: 1234
+	user: iss: 1234
 	body:
-		accountDelta:
-			addedOrModified: [mockTransaction]
+		addedOrModified: [mockTransaction]
+		serverTimestamp: 0
 }
 
-
-# request = {
-# 	user: ui: 1234
-# 	body:
-# 		accountDelta:
-# 			addedOrModified: [mockTransaction]
-# 			serverTimestamp: new Date().getTime()
-# }
 
 mockPgClient = (err, res) -> {
 	upsert: (sql, data, where, params, done) ->
@@ -45,6 +37,7 @@ describe '#Sync controller', ->
 	it 'should synchronize data', (done) ->
 		controller = createAppController null, [mockTransaction]
 		res = {
+			set: ->
 			send: (accountDelta) ->
 				accountDelta = protoBufHelper.decode accountDelta
 				transaction = accountDelta.addedOrModified.pop()

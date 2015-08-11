@@ -36,7 +36,6 @@ ProtoBuffersConvert = (message) ->
 	this.type ='ProtoBuffers'
 	this.message = message || 'Cannot convert proto buffers message'
 	this.resCode = 401
-	Error.captureStackTrace this, ProtoBuffersConvert
 
 util.inherits ProtoBuffersConvert, Error
 

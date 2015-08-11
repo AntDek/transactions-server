@@ -8,4 +8,4 @@ module.exports = (pgClient) ->
 		, done
 
 	fetchTransactions: (updatedTime, done) ->
-		pgClient.queryAll "SELECT guid, date, value, kind, deleted WHERE date > $1", [updatedTime], done
+		pgClient.queryAll "SELECT guid, date, value, kind, deleted FROM transactions WHERE date > $1", [updatedTime], done

@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "Server for Android app",
   "scripts": {
-    "start": "coffee index.coffee",
+    "start": "coffee app/index.coffee",
     "test": "mocha --compilers coffee:coffee-script/register test/**/*Test.coffee"
   },
   "dependencies": {
     "async": "^1.4.2",
+    "body-parser": "^1.13.3",
     "cson-config": "^0.1.12",
     "easy-pg": "^1.0.5",
     "express": "^4.13.3",

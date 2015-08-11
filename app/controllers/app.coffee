@@ -9,8 +9,8 @@ module.exports = (userModel, trModel, jwtHelper, protoBufHelper) ->
 		date.setMonth date.getMonth() + 1
 
 		jwtHelper.encode {
-			ui: user.id
-			ex: date.getTime()
+			iss: user.id
+			exp: date.getTime()
 		}
 
 	createDeltaAccount = (transactions) -> {
@@ -29,9 +29,9 @@ module.exports = (userModel, trModel, jwtHelper, protoBufHelper) ->
 			res.json {token: createJWT user}
 
 	sync: (req, res, next) ->
-		{accountDelta} = req.body
-		userId = req.user.ui
-		serverTimestamp = accountDelta.serverTimestamp || 0
+		accountDelta = req.body
+		userId = req.user.iss
+		serverTimestamp = accountDelta.serverTimestamp
 
 		async.series [
 			(done) ->
@@ -41,4 +41,5 @@ module.exports = (userModel, trModel, jwtHelper, protoBufHelper) ->
 				trModel.fetchTransactions serverTimestamp, done
 		], (err, data) ->
 			return next err if err
+			res.set('Content-Type', 'application/x-protobuf');
 			res.send protoBufHelper.encode(createDeltaAccount data[1])

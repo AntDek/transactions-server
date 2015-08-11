@@ -6,7 +6,7 @@ jwtHelperFn = require './util/jwtHelper'
 errorHandler = require './controllers/errorHandler'
 appControllerFn = require './controllers/app'
 authenticationFn = require './controllers/authentication'
-protoBufHelperFn = require './util/protoBufHelper')
+protoBufHelperFn = require './util/protoBufHelper'
 protoBuffersFn = require './controllers/protoBuffers'
 
 # load configuration

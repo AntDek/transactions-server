@@ -1,0 +1,44 @@
+errors = require '../errors'
+jwt = require 'jwt-simple'
+async = require 'async'
+
+module.exports = (userModel, trModel, jwtHelper, protoBufHelper) ->
+	
+	createJWT = (user) ->
+		date = new Date()
+		date.setMonth date.getMonth() + 1
+
+		jwtHelper.encode {
+			ui: user.id
+			ex: date.getTime()
+		}
+
+	createDeltaAccount = (transactions) -> {
+		serverTimestamp: new Date().getTime()
+		addedOrModified: transactions
+	}
+
+	login: (req, res, next) ->
+		{userName, password} = req.body
+		return next new errors.BadCredentials() if not userName or not password
+		
+		userModel.findUser userName, password, (err, user) ->
+			return next err if err
+			return next new errors.UserNotFound() if not user
+			
+			res.json {token: createJWT user}
+
+	sync: (req, res, next) ->
+		{accountDelta} = req.body
+		userId = req.user.ui
+		serverTimestamp = accountDelta.serverTimestamp || 0
+
+		async.series [
+			(done) ->
+				return done() if accountDelta.addedOrModified.length is 0
+				trModel.updateTransasctions userId, accountDelta.addedOrModified, done
+			(done) ->
+				trModel.fetchTransactions serverTimestamp, done
+		], (err, data) ->
+			return next err if err
+			res.send protoBufHelper.encode(createDeltaAccount data[1])

@@ -1,0 +1,4 @@
+jwt:
+	secret: process.env.JWT_SECRET
+	algorithm: process.env.JWT_ALGORITHM
+postgre: process.env.POSTGRE_SQL_DB

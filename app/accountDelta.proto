@@ -1,0 +1,12 @@
+message Transaction {
+  optional string guid = 1;
+  optional int64 date = 2;
+  optional double value = 3;
+  optional string kind = 4;
+  optional bool deleted = 5;
+}
+
+message AccountDelta {
+  repeated Transaction addedOrModified = 1;
+  optional int64 serverTimestamp = 2;
+}

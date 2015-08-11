@@ -1,0 +1,19 @@
+{
+  "name": "transaction-app-server",
+  "version": "0.0.1",
+  "description": "Server for Android app",
+  "scripts": {
+    "start": "coffee index.coffee",
+    "test": "mocha --compilers coffee:coffee-script/register test/**/*Test.coffee"
+  },
+  "dependencies": {
+    "async": "^1.4.2",
+    "cson-config": "^0.1.12",
+    "easy-pg": "^1.0.5",
+    "express": "^4.13.3",
+    "jwt-simple": "^0.3.0",
+    "passport": "^0.2.2",
+    "passport-http-bearer": "^1.0.1",
+    "protocol-buffers": "^3.1.2"
+  }
+}
